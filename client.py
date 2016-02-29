@@ -24,11 +24,22 @@ def encrypt(key, raw):
 def decrypt(key, encoding):
 	if key == '':
 		return encoding
+
+	raw = encoding
+
 	key = hashlib.sha256(key.encode()).digest()
-	encoding = base64.b64decode(encoding)
-	IV = encoding[:16]
-	cipher = AES.new(key, AES.MODE_CBC, IV)
-	return unpad(cipher.decrypt(encoding[16:]))
+
+	try:
+		encoding = base64.b64decode(encoding)
+		IV = encoding[:16]
+		cipher = AES.new(key, AES.MODE_CBC, IV)
+		cipher = unpad(cipher.decrypt(encoding[16:]))
+	except TypeError:
+		return raw
+	except ValueError:
+		return raw
+
+	return cipher
 	
  
 def chat_client():
@@ -71,13 +82,14 @@ def chat_client():
                     sys.exit()
                 else :
                     #print data
+                    sys.stdout.write('\n')
                     sys.stdout.write(data)
-                    sys.stdout.write('[Me] '); sys.stdout.flush()     
+                    sys.stdout.write('\n[Me] '); sys.stdout.flush()     
             
             else :
                 # user entered a message
                 msg = sys.stdin.readline()
-                msg = '[%s] %s\n' % (name, msg)
+                msg = '[%s] %s' % (name, msg)
                 msg = encrypt(key, msg)
 				# encrypt and send the message
                 s.send(msg)
