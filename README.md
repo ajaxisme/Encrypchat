@@ -1,4 +1,4 @@
-Encryptchat
+Encrypchat
 
 A chat application which encrypts all messages using AES encryption with key entered individually by the chat participants.
 
