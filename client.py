@@ -5,7 +5,6 @@ import base64
 from Crypto.Cipher import AES
 from Crypto import Random
 import hashlib
-import getpass
 
 BLOCKSIZE = 16
 pad = lambda s: s + (BLOCKSIZE - len(s) % BLOCKSIZE) * chr(BLOCKSIZE - len(s) % BLOCKSIZE)
@@ -43,12 +42,11 @@ def decrypt(key, encoding):
 	
  
 def chat_client():
-    if(len(sys.argv) < 3) :
-        print 'Usage : python chat_client.py hostname port'
-        sys.exit()
 
-    host = sys.argv[1]
-    port = int(sys.argv[2])
+    #host = sys.argv[1]
+    host = 'localhost'
+    #port = int(sys.argv[2])
+    port = 5554
      
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(2)

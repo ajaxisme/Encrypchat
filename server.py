@@ -5,7 +5,7 @@ import sys, socket, select
 HOST = '' 
 SOCKET_LIST = []
 RECV_BUFFER = 4096 
-PORT = 9009
+PORT = 5554 
 
 def chat_server():
 
@@ -32,8 +32,6 @@ def chat_server():
                 SOCKET_LIST.append(sockfd)
                 print "Client (%s, %s) connected" % addr
                  
-                #broadcast(server_socket, sockfd, "[%s:%s] entered our chatting room\n" % addr)
-             
             # a message from a client, not a new connection
             else:
                 # process data recieved from client, 
@@ -41,8 +39,7 @@ def chat_server():
                     # receiving data from the socket.
                     data = sock.recv(RECV_BUFFER)
                     if data:
-                        # there is something in the socket
-                        #broadcast(server_socket, sock, "\r" + '[' + str(sock.getpeername()) + '] ' + data)  
+                        # client data incoming, broadcast to all clients
                         broadcast(server_socket, sock, data)  
                     else:
                         # remove the socket that's broken    
@@ -75,4 +72,3 @@ def broadcast (server_socket, sock, message):
  
 if __name__ == "__main__":
     sys.exit(chat_server())
-
